@@ -3,7 +3,7 @@ import kotlin.random.Random
 fun main(){
     val DAUS: String = "⚀ ⚁ ⚂ ⚃ ⚄ ⚅"
     val CARES_DAU: Array<String> = arrayOf("⚀", "⚁", "⚂", "⚃", "⚄", "⚅")
-
+    var guanyaUser:Int = 0
     var partides: Int?
     var tiradesPerPartida: Int?
 
@@ -18,7 +18,7 @@ fun main(){
 
         if (partides != null && (partides < 1 || partides > 3)){
             partides = null
-            println("ERROR: Valor no acceptat!")
+            println("⚠\uFE0FERROR: Valor no acceptat!")
         }
     }while(partides == null)
 
@@ -29,7 +29,7 @@ fun main(){
 
         if (tiradesPerPartida != null && (tiradesPerPartida < 1 || tiradesPerPartida > 6)){
             tiradesPerPartida = null
-            println("ERROR: Valor no acceptat!")
+            println("⚠\uFE0FERROR: Valor no acceptat!")
         }
     }while(tiradesPerPartida == null)
 
@@ -43,11 +43,13 @@ fun main(){
     for(partida in 0 until partides) {
         var acumuladorCPU: Int = 0
         var tiradaActual: Int = 0
-
+        println("\n================ Partida ${partida + 1} ================")
         for (tirada in 0 until tiradesGuardades[partida].size - 1) {
             /** Tirades persona **/
-            println("Tira el dau! (Intent $tirada)")
-            tiradaActual = Random.nextInt(1, 6 + 1)
+            println("Tira el dau! (Intent ${tirada+1})")
+            println("Presiona 'Enter'")
+            readLine()  // Espera que l'usuari premi Enter
+            tiradaActual = Random.nextInt(1, 7)
             println("Has tret un ${CARES_DAU[tiradaActual-1]} !")
 
             // Guardem la tirada
@@ -57,19 +59,22 @@ fun main(){
             tiradesGuardades[partida][tiradesPerPartida] += tiradaActual
 
             /** Tirades CPU **/
-            acumuladorCPU += Random.nextInt(1, 6 + 1)
+            acumuladorCPU += Random.nextInt(1, 7)
         }
 
-        println("Partida acabada!")
+        println("\n================Resultat Partida ${partida + 1} ================")
         println("Tu has aconseguit ${tiradesGuardades[partida][tiradesPerPartida]} punts")
         println("La CPU ha aconseguit $acumuladorCPU punts")
 
         if (tiradesGuardades[partida][tiradesPerPartida] > acumuladorCPU){
             println("Has guanyat!")
+            guanyaUser++
         }else if (tiradesGuardades[partida][tiradesPerPartida] < acumuladorCPU){
             println("Has perdut!")
         }else{
             println("Heu empatat!")
         }
     }
+    println("\n================ Resultats Finals ================")
+    println("Has jugat uns $partides cops i has guanyat un ${guanyaUser*100/partides}%")
 }
