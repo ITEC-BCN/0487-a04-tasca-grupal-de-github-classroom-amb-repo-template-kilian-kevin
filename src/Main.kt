@@ -3,7 +3,7 @@ import kotlin.random.Random
 fun main(){
     val DAUS: String = "⚀ ⚁ ⚂ ⚃ ⚄ ⚅"
     val CARES_DAU: Array<String> = arrayOf("⚀", "⚁", "⚂", "⚃", "⚄", "⚅")
-    var guanyaUser:Int = 0
+
     var partides: Int?
     var tiradesPerPartida: Int?
 
@@ -18,7 +18,7 @@ fun main(){
 
         if (partides != null && (partides < 1 || partides > 3)){
             partides = null
-            println("⚠\uFE0FERROR: Valor no acceptat!")
+            println("ERROR: Valor no acceptat!")
         }
     }while(partides == null)
 
@@ -29,7 +29,7 @@ fun main(){
 
         if (tiradesPerPartida != null && (tiradesPerPartida < 1 || tiradesPerPartida > 6)){
             tiradesPerPartida = null
-            println("⚠\uFE0FERROR: Valor no acceptat!")
+            println("ERROR: Valor no acceptat!")
         }
     }while(tiradesPerPartida == null)
 
@@ -43,38 +43,37 @@ fun main(){
     for(partida in 0 until partides) {
         var acumuladorCPU: Int = 0
         var tiradaActual: Int = 0
-        println("\n================ Partida ${partida + 1} ================")
+        var tiradaCPU: Int = 0
+
         for (tirada in 0 until tiradesGuardades[partida].size - 1) {
-            /** Tirades persona **/
-            println("Tira el dau! (Intent ${tirada+1})")
-            println("Presiona 'Enter'")
-            readLine()  // Espera que l'usuari premi Enter
-            tiradaActual = Random.nextInt(1, 7)
+            /** tirades persona **/
+            println("Tires el dau! (Intent $tirada)")
+            tiradaActual = Random.nextInt(1, 6 + 1)
             println("Has tret un ${CARES_DAU[tiradaActual-1]} !")
 
-            // Guardem la tirada
+            // guardado de la tirada en la matriz
             tiradesGuardades[partida][tirada] = tiradaActual
 
-            // Acumulem el sumatori a l'última columna de la fila
+            // acumulación del sumatorio en la última columna de la fila
             tiradesGuardades[partida][tiradesPerPartida] += tiradaActual
 
-            /** Tirades CPU **/
-            acumuladorCPU += Random.nextInt(1, 7)
+            /** tirades CPU **/
+            println("La CPU tira el dau! (Intent $tirada)")
+            tiradaCPU = Random.nextInt(1, 6 + 1)
+            println("La CPU ha tret un ${CARES_DAU[tiradaCPU-1]} !")
+            acumuladorCPU += tiradaCPU
         }
 
-        println("\n================Resultat Partida ${partida + 1} ================")
+        println("Partida acabada!")
         println("Tu has aconseguit ${tiradesGuardades[partida][tiradesPerPartida]} punts")
         println("La CPU ha aconseguit $acumuladorCPU punts")
 
         if (tiradesGuardades[partida][tiradesPerPartida] > acumuladorCPU){
             println("Has guanyat!")
-            guanyaUser++
         }else if (tiradesGuardades[partida][tiradesPerPartida] < acumuladorCPU){
             println("Has perdut!")
         }else{
             println("Heu empatat!")
         }
     }
-    println("\n================ Resultats Finals ================")
-    println("Has jugat uns $partides cops i has guanyat un ${guanyaUser*100/partides}%")
 }
